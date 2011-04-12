@@ -15,9 +15,8 @@ public class TIA extends Activity
      */
     public Database db = null;
 
-    /** Called when the activity is first created. */
     @Override
-    public void onCreate(Bundle savedInstanceState)
+	public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
@@ -25,8 +24,25 @@ public class TIA extends Activity
 	db = new Database(getApplicationContext());
 	Log.d(TAG, "TIA started...");
 
-
     }
+
+    @Override
+	public void onStop()
+    {
+	db.close();
+    }
+
+	    /*SQLiteCursor query = (SQLiteCursor) db.query(false, 
+	    "TIA_FLOW",
+	    null,
+	    null,
+							 null,
+							 null,
+							 null,
+							 null, 
+							 null);
+ 	    Log.d(TAG, ""+query.getColumnCount());
+	    */
 
 
 }
