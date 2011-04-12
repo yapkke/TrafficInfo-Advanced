@@ -1,5 +1,7 @@
 package org.sqlite.helper;
 
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import java.util.Vector;
 
 /** SQLite table
@@ -88,5 +90,16 @@ public class SQLiteTable
     public String name()
     {
 	return name;
+    }
+
+    /** Insert values
+     *
+     * @param db reference to database
+     * @param values values to insert
+     * @return row number or -1 if error occured
+     */
+    public long insert(SQLiteDatabase db, ContentValues values)
+    {
+	return db.insert(name, null, values);
     }
 }

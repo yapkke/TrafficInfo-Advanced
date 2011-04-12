@@ -3,6 +3,8 @@ package org.openflow.android.tia;
 import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteCursor;
 import org.openflow.android.tia.Database;
 
 public class TIA extends Activity
@@ -23,6 +25,14 @@ public class TIA extends Activity
 
 	db = new Database(getApplicationContext());
 	Log.d(TAG, "TIA started...");
+
+	/////////////////////////////
+	ContentValues cv = new ContentValues();
+	cv.put("App","Testing");
+	cv.put("App_No",12);
+	db.insert("TIA_FLOW", cv);
+	
+
     }
 
     @Override

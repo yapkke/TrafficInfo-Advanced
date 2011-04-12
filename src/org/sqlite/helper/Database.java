@@ -1,6 +1,7 @@
 package org.sqlite.helper;
 
 import android.content.Context;
+import android.content.ContentValues;
 import android.os.Environment;
 import android.util.Log;
 import android.database.sqlite.*;
@@ -148,6 +149,17 @@ public abstract class Database
     public void addTable(SQLiteTable tab)
     {
 	doh.tables.add(tab);
+    }
+
+    /** Insert values
+     *
+     * @param tabname table name
+     * @param values values to insert
+     * @return row number or -1 if error occured
+     */
+    public long insert(String tabname, ContentValues values)
+    {
+	return db.insert(tabname, null, values);
     }
 
     /** Function to create tables and add them via addTable
