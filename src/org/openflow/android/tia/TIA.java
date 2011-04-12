@@ -60,18 +60,4 @@ public class TIA extends Activity
 	super.onDestroy();
 	Log.d(TAG, "TIA stopped");
     }
-
-	    /*SQLiteCursor query = (SQLiteCursor) db.query(false, 
-	    "TIA_FLOW",
-	    null,
-	    null,
-							 null,
-							 null,
-							 null,
-							 null, 
-							 null);
- 	    Log.d(TAG, ""+query.getColumnCount());
-	    */
-
-
 }

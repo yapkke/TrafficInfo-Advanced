@@ -142,6 +142,24 @@ public abstract class Database
 	}
     }
 
+    /** Get table
+     *
+     * @param name name of table
+     * @return reference to table or null if not found
+     */
+    public SQLiteTable getTable(String name)
+    {
+	Iterator<SQLiteTable> i = doh.tables.iterator();
+	while (i.hasNext())
+	{
+	    SQLiteTable t = i.next();
+	    if (t.name() == name)
+		return t;
+	}
+
+	return null;
+    }
+
     /** Add table to database
      *
      * @param tab reference to SQLiteTable
