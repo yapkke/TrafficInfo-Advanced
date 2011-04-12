@@ -23,13 +23,14 @@ public class TIA extends Activity
 
 	db = new Database(getApplicationContext());
 	Log.d(TAG, "TIA started...");
-
     }
 
     @Override
-	public void onStop()
+	public void onDestroy()
     {
 	db.close();
+	super.onDestroy();
+	Log.d(TAG, "TIA stopped");
     }
 
 	    /*SQLiteCursor query = (SQLiteCursor) db.query(false, 
