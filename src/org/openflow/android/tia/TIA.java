@@ -32,6 +32,24 @@ public class TIA extends Activity
 	cv.put("App_No",12);
 	db.insert("TIA_FLOW", cv);
 	
+	SQLiteCursor c = (SQLiteCursor) db.db.query("TIA_FLOW",
+						    null, null, null, null, null, null);
+	c.moveToFirst();
+	Log.d(TAG, c.getCount()+" rows");
+	while (true)
+	{
+	    String[] names = c.getColumnNames();
+	    for (int i = 0; i < names.length; i++)
+		Log.d(TAG, names[i]);
+	    Log.d(TAG, c.getString(0));
+	    Log.d(TAG, c.getInt(1)+"");
+
+	    if (c.isLast())
+		break;
+	    c.moveToNext();
+	}
+	c.close();
+	
 
     }
 
