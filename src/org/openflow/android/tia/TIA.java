@@ -6,6 +6,8 @@ import android.util.Log;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteCursor;
 import org.openflow.android.tia.Database;
+import org.sqlite.helper.OpenFlow;
+import org.openflow.protocol.OFMatch;
 
 public class TIA extends Activity
 {
@@ -27,13 +29,15 @@ public class TIA extends Activity
 	Log.d(TAG, "TIA started...");
 
 	/////////////////////////////
+	OFMatch ofm = new OFMatch();
 	ContentValues cv = new ContentValues();
 	cv.put("App","Testing");
-	cv.put("App_No",12);
+	OpenFlow.addOFMatch2CV(cv, ofm);
 	db.insert("TIA_FLOW", cv);
-	
+
 	SQLiteCursor c = (SQLiteCursor) db.db.query("TIA_FLOW",
-						    null, null, null, null, null, null);
+						    null, null, null, 
+						    null, null, null);
 	c.moveToFirst();
 	Log.d(TAG, c.getCount()+" rows");
 	while (true)
@@ -41,16 +45,12 @@ public class TIA extends Activity
 	    String[] names = c.getColumnNames();
 	    for (int i = 0; i < names.length; i++)
 		Log.d(TAG, names[i]);
-	    Log.d(TAG, c.getString(0));
-	    Log.d(TAG, c.getInt(1)+"");
-
+	    
 	    if (c.isLast())
 		break;
 	    c.moveToNext();
 	}
 	c.close();
-	
-
     }
 
     @Override

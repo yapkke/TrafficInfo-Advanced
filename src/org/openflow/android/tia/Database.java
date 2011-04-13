@@ -29,7 +29,7 @@ public class Database
     {
 	SQLiteTable tab = new SQLiteTable("TIA_FLOW");
 	tab.addColumn("App", SQLiteTable.DataType.TEXT);
-	tab.addColumn("App_No", SQLiteTable.DataType.INTEGER);
+	OpenFlow.addOFMatch2Table(tab);
 	addTable(tab);
     }
 }
