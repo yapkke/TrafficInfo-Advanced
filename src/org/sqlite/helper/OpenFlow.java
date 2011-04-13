@@ -29,8 +29,54 @@ public class OpenFlow
 				       "TP_Source",
 				       "TP_Destination" };
     }
+
+    /** Array of names for ofp_flow_removed
+     * minus ofp_match
+     */
+    public static String[] OFFLOWREMOVED_NAMES;
+    static 
+    {
+	OFFLOWREMOVED_NAMES = new String[] { "Cookie",
+				       "Priority",
+				       "Reason",
+				       "Duration",
+				       "Idle_Timeout",
+				       "Packet_Count",
+				       "Byte_Count" };
+    }
+
+    /** Add value to ContentValues
+     *
+     * Uses new OFMatch is match is null in OFFlowRemoved.
+     * Reason is -1 if reason is null (a corner case).
+     * Stores duration as real number.
+     *
+     * @param cv contentvalues to add to
+     * @param ofr OpenFlow flow removed
+     */
+    public static void addOFFlowRemoved2CV(ContentValues cv, OFFlowRemoved ofr)
+    {
+	OFMatch ofm = ofr.getMatch();
+	if (ofm == null)
+	    ofm = new OFMatch();
+	addOFMatch2CV(cv, ofm);
+
+	cv.put(OFFLOWREMOVED_NAMES[0], ofr.getCookie());
+	cv.put(OFFLOWREMOVED_NAMES[1], ofr.getPriority());
+	OFFlowRemoved.OFFlowRemovedReason ofrr = ofr.getReason();
+	if (ofrr == null)
+	    cv.put(OFFLOWREMOVED_NAMES[2], -1);
+	else
+	    cv.put(OFFLOWREMOVED_NAMES[2], ofrr.ordinal());
+	cv.put(OFFLOWREMOVED_NAMES[3], (double) (ofr.getDurationSeconds()+ 
+						 (ofr.getDurationNanoseconds()/
+						  1e9)));
+	cv.put(OFFLOWREMOVED_NAMES[4], ofr.getIdleTimeout());
+	cv.put(OFFLOWREMOVED_NAMES[5], ofr.getPacketCount());
+	cv.put(OFFLOWREMOVED_NAMES[6], ofr.getByteCount());
+    }
     
-    /** Add value to ContentValies
+    /** Add value to ContentValues
      *
      * @param cv contentvalues to add to
      * @param ofm OpenFlow match
@@ -73,6 +119,20 @@ public class OpenFlow
     {
 	for (int i = 0; i < OFMATCH_NAMES.length; i++)
 	    tab.addColumn(OFMATCH_NAMES[i], SQLiteTable.DataType.INTEGER);
+    }
+
+    /** Add ofp_flow_removed fields to database
+     *
+     * @param tab table to put ofp_match into
+     */
+    public static void addOFFlowRemoved2Table(SQLiteTable tab)
+    {
+	addOFMatch2Table(tab);
+	for (int i = 0; i < OFFLOWREMOVED_NAMES.length; i++)
+	    if (OFFLOWREMOVED_NAMES[i] == "Duration")
+		tab.addColumn(OFFLOWREMOVED_NAMES[i], SQLiteTable.DataType.REAL);
+	    else
+		tab.addColumn(OFFLOWREMOVED_NAMES[i], SQLiteTable.DataType.INTEGER);
     }
 
 

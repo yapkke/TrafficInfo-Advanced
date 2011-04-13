@@ -7,7 +7,7 @@ import android.content.ContentValues;
 import android.database.sqlite.SQLiteCursor;
 import org.openflow.android.tia.Database;
 import org.sqlite.helper.OpenFlow;
-import org.openflow.protocol.OFMatch;
+import org.openflow.protocol.OFFlowRemoved;
 
 public class TIA extends Activity
 {
@@ -29,10 +29,10 @@ public class TIA extends Activity
 	Log.d(TAG, "TIA started...");
 
 	/////////////////////////////
-	OFMatch ofm = new OFMatch();
+	OFFlowRemoved ofr = new OFFlowRemoved();
 	ContentValues cv = new ContentValues();
 	cv.put("App","Testing");
-	OpenFlow.addOFMatch2CV(cv, ofm);
+	OpenFlow.addOFFlowRemoved2CV(cv, ofr);
 	db.insert("TIA_FLOW", cv);
 
 	SQLiteCursor c = (SQLiteCursor) db.db.query("TIA_FLOW",
