@@ -23,14 +23,16 @@ public class TIA extends Activity
 	Intent serviceIntent = new Intent();
 	serviceIntent.setAction("edu.stanford.holyc.LalDBService");
 	startService(serviceIntent);
-	stopService(serviceIntent);
-
     }
 
     @Override
 	public void onDestroy()
     {
+	Log.d(TAG, "Stopping TIA...");
+	Intent serviceIntent = new Intent();
+	serviceIntent.setAction("edu.stanford.holyc.LalDBService");
+	stopService(serviceIntent);
+
 	super.onDestroy();
-	Log.d(TAG, "TIA stopped");
     }
 }
