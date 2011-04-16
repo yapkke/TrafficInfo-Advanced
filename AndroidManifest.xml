@@ -14,5 +14,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+	<service android:name="edu.stanford.holyc.LalDBService">
+	  <intent-filter>
+	    <action android:name="edu.stanford.holyc.LalDBService" />
+	  </intent-filter>
+	</service>
     </application>
 </manifest> 

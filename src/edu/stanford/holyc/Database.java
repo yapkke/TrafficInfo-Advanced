@@ -1,4 +1,4 @@
-package org.openflow.android.tia;
+package edu.stanford.holyc;
 
 import android.content.Context;
 import android.util.Log;
@@ -14,11 +14,15 @@ public class Database
 {
     /** Default filename
      */
-    public static final String filename = "TIA.sqlite";
+    public static final String filename = "Lal.sqlite";
 
     /** Debug name
      */
-    private static final String TAG = "TIASqlDb";
+    private static final String TAG = "LalDatabase";
+
+    /** Name of table
+     */
+    public static final String TABLE_NAME = "Lal_Flow_Removed";
 
     public Database(Context context)
     {
@@ -27,7 +31,7 @@ public class Database
 
     public void createTables()
     {
-	SQLiteTable tab = new SQLiteTable("TIA_FLOW");
+	SQLiteTable tab = new SQLiteTable(TABLE_NAME);
 	tab.addColumn("App", SQLiteTable.DataType.TEXT);
 	OpenFlow.addOFFlowRemoved2Table(tab);
 	addTable(tab);

@@ -4,8 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.content.ContentValues;
+import android.content.Intent;
 import android.database.sqlite.SQLiteCursor;
-import org.openflow.android.tia.Database;
 import org.sqlite.helper.OpenFlow;
 import org.openflow.protocol.OFFlowRemoved;
 
@@ -15,9 +15,6 @@ public class TIA extends Activity
      */
     private static final String TAG = "TIA";
     
-    /** Reference to database
-     */
-    public Database db = null;
 
     @Override
 	public void onCreate(Bundle savedInstanceState)
@@ -25,11 +22,16 @@ public class TIA extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
 
-	db = new Database(getApplicationContext());
+	//db = new Database(getApplicationContext());
 	Log.d(TAG, "TIA started...");
 
+	Intent serviceIntent = new Intent();
+	serviceIntent.setAction("edu.stanford.holyc.LalDBService");
+	startService(serviceIntent);
+	stopService(serviceIntent);
+
 	/////////////////////////////
-	OFFlowRemoved ofr = new OFFlowRemoved();
+	/*OFFlowRemoved ofr = new OFFlowRemoved();
 	ContentValues cv = new ContentValues();
 	cv.put("App","Testing");
 	OpenFlow.addOFFlowRemoved2CV(cv, ofr);
@@ -50,13 +52,12 @@ public class TIA extends Activity
 		break;
 	    c.moveToNext();
 	}
-	c.close();
+	c.close();*/
     }
 
     @Override
 	public void onDestroy()
     {
-	db.close();
 	super.onDestroy();
 	Log.d(TAG, "TIA stopped");
     }
