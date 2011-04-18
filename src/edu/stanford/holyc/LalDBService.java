@@ -2,16 +2,28 @@ package edu.stanford.holyc;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.ContentValues;
+import android.os.Binder;
 import android.os.IBinder;
+import android.os.Message;
+import android.os.Messenger;
+import android.os.Handler;
 import android.widget.Toast;
 import android.util.Log;
-import edu.stanford.holyc.Database;
 
-import android.content.ContentValues;
+import edu.stanford.holyc.Database;
 import org.sqlite.helper.OpenFlow;
 import org.openflow.protocol.OFFlowRemoved;
 
-
+/** Lal's Database Service
+ *
+ *
+ * Developed as messenger service with guidance from
+ * http://developer.android.com/guide/topics/fundamentals/bound-services.html
+ *
+ * @author ykk
+ * @date Apr 2011
+ */
 public class LalDBService extends Service
 {
     /** Log name
@@ -22,10 +34,36 @@ public class LalDBService extends Service
      */
     public Database db = null;
 
-    @Override
-	public IBinder onBind(Intent intent)
+    /** Message type for query
+     */
+    public static final int QUERY_TYPE = 1;
+    
+    /** Handler of incoming messages from clients.
+     */
+    class IncomingHandler extends Handler 
     {
-	return null;
+        @Override
+	    public void handleMessage(Message msg) 
+	{
+            switch (msg.what) 
+	    {
+	    case QUERY_TYPE:
+		Log.d(TAG, "Query");
+		break;
+	    default:
+		super.handleMessage(msg);
+            }
+        }
+    }
+
+    /** Target for clients to send messages.
+     */
+    public final Messenger mMessenger = new Messenger(new IncomingHandler());
+    
+    @Override
+	public IBinder onBind(Intent intent) 
+    {
+	return mMessenger.getBinder();
     }
 
     @Override
