@@ -48,7 +48,7 @@ public class LalDBService extends Service
             switch (msg.what) 
 	    {
 	    case QUERY_TYPE:
-		Log.d(TAG, "Query");
+		Log.d(TAG, "Query :"+((String) msg.obj));
 		break;
 	    default:
 		super.handleMessage(msg);

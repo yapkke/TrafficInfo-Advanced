@@ -11,6 +11,9 @@ import android.content.Intent;
 import android.content.Context;
 import android.content.ComponentName;
 import android.content.ServiceConnection;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import edu.stanford.holyc.LalDBService;
 
 /** TrafficInfo Advanced class
@@ -60,14 +63,6 @@ public class TIA extends Activity
     @Override
 	protected void onStop() 
     {
-	Message msg = Message.obtain(null, LalDBService.QUERY_TYPE, 0, 0,
-				     new String("SELECT * FROM Lal_Flow_Removed;"));
-        try {
-            mService.send(msg);
-        } catch (RemoteException e) {
-            e.printStackTrace();
-        }
-
         super.onStop();
         if (mBound)
 	{
@@ -76,11 +71,33 @@ public class TIA extends Activity
         }
     }
 
+    private OnClickListener cListener = new OnClickListener() 
+    {
+	public void onClick(View v) 
+	{
+	    if (!mBound)
+		return;
+
+	    Message msg = Message.obtain(null, LalDBService.QUERY_TYPE, 0, 0,
+					 new String("SELECT * FROM Lal_Flow_Removed;"));
+	    try
+	    {
+		mService.send(msg);
+	    } catch (RemoteException e) 
+	    {
+		e.printStackTrace();
+	    }
+	}
+    };
+
     @Override
 	public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main);
+	setContentView(R.layout.main);
+
+	Button button = (Button) findViewById(R.id.query);
+	button.setOnClickListener(cListener);
 
 	Log.d(TAG, "Starting TIA...");
     }
