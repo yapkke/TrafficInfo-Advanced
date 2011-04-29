@@ -1,4 +1,4 @@
-package edu.stanford.holyc.tia;
+package edu.stanford.lal.tia;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import android.content.ServiceConnection;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import edu.stanford.holyc.LalDBService;
 
 /** TrafficInfo Advanced class
  * 
@@ -55,9 +54,9 @@ public class TIA extends Activity
 	protected void onStart() 
     {
         super.onStart();
-        bindService(new Intent(this, LalDBService.class), 
+        /*bindService(new Intent(this, LalDBService.class), 
 		    mConnection,
-		    Context.BIND_AUTO_CREATE);
+		    Context.BIND_AUTO_CREATE);*/
     }
 
     @Override
@@ -75,18 +74,18 @@ public class TIA extends Activity
     {
 	public void onClick(View v) 
 	{
-	    if (!mBound)
+	    /*if (!mBound)
 		return;
 
 	    Message msg = Message.obtain(null, LalDBService.QUERY_TYPE, 0, 0,
-					 new String("SELECT * FROM Lal_Flow_Removed;"));
+	    new String("SELECT * FROM Lal_Flow_Removed;"));
 	    try
 	    {
-		mService.send(msg);
+	    mService.send(msg);
 	    } catch (RemoteException e) 
 	    {
 		e.printStackTrace();
-	    }
+		}*/
 	}
     };
 
