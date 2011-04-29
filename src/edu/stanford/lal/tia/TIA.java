@@ -13,6 +13,30 @@ import android.widget.AdapterView;
 import android.widget.TextView;
 import android.widget.AdapterView.OnItemClickListener;
 
+import java.util.Vector;
+
+class NameValue
+{
+    /** Name
+     */
+    public String name;
+    /** Value
+     */
+    public String value;
+
+    public NameValue(String n, String v)
+    {
+	name = n;
+	value = v;
+    }
+
+    @Override
+	public String toString()
+    {
+	return name+"\n   Value="+value;
+    }
+}
+
 /** TrafficInfo Advanced class
  * 
  * @author ykk
@@ -41,7 +65,14 @@ public class TIA extends ListActivity
     {
         super.onCreate(savedInstanceState);
 
-	setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, COUNTRIES));
+	Vector<NameValue> COUNTRIES = new Vector<NameValue>();
+	COUNTRIES.add(new NameValue("Test1", "t"));
+	COUNTRIES.add(new NameValue("Test2", "ts"));
+	COUNTRIES.add(new NameValue("Test3", "te"));
+	COUNTRIES.add(new NameValue("Test4", "te"));
+	COUNTRIES.add(new NameValue("Test5", "te2"));
+
+	setListAdapter(new ArrayAdapter<NameValue>(this, R.layout.list_item, COUNTRIES));
 
 	ListView lv = getListView();
 	lv.setTextFilterEnabled(true);
@@ -49,14 +80,6 @@ public class TIA extends ListActivity
 
 	Log.d(TAG, "Starting TIA...");
     }
-
-    static final String[] COUNTRIES = new String[] {
-	"Afghanistan", "Albania", "Algeria", "American Samoa", "Andorra",
-	"Angola", "Anguilla", "Antarctica", "Antigua and Barbuda", "Argentina",
-	"Armenia", "Aruba", "Australia", "Austria", "Azerbaijan",
-	"Bahrain", "Bangladesh", "Barbados", "Belarus", "Belgium"
-    };
-
 
     @Override
 	public void onDestroy()
