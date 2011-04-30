@@ -8,6 +8,8 @@ import android.content.IntentFilter;
 import android.content.Context;
 import android.content.BroadcastReceiver;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.LayoutInflater;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ArrayAdapter;
@@ -53,6 +55,47 @@ class QResult
     }
 }
 
+class QResultAdapter extends ArrayAdapter<QResult>
+{
+    private Vector<QResult> items;
+    
+    public QResultAdapter(Context context, int textViewResourceId, Vector<QResult> items)
+    {
+	super(context, textViewResourceId, items);
+	this.items = items;
+    }
+	
+	
+    @Override
+	public View getView(int position, View convertView, ViewGroup parent) 
+    {
+	View v = convertView;
+	if (v == null)
+	{
+	    LayoutInflater vi = (LayoutInflater) 
+		getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+	    v = vi.inflate(R.layout.list_item, null);
+	}
+	QResult o = items.get(position);
+	if (o != null)
+	{
+	    TextView appname = (TextView) v.findViewById(R.id.appname);
+	    TextView bc = (TextView) v.findViewById(R.id.bytecount);
+	    TextView pc = (TextView) v.findViewById(R.id.pktcount);
+	    TextView d = (TextView) v.findViewById(R.id.duration);
+	    if (appname != null)
+		appname.setText(o.appname);
+	    if (bc != null)
+		bc.setText("     "+o.bc+" bytes");
+	    if (pc != null)
+		pc.setText("     "+o.pc+" packets");
+	    if (d != null)
+		d.setText("     "+o.duration+" secs long");
+	}
+	return v;
+    }
+}
+
 /** TrafficInfo Advanced class
  * 
  * @author ykk
@@ -74,7 +117,7 @@ public class TIA extends ListActivity
     LalMessage lmsg = new LalMessage();
     /** ListView adapter
      */
-    ArrayAdapter<QResult> adapter;
+    QResultAdapter adapter;
 
     /** Broadcast receiver
      */
@@ -99,7 +142,7 @@ public class TIA extends ListActivity
 	}
 
     };
-
+    
     @Override
 	protected void onStart() 
     {
@@ -124,7 +167,7 @@ public class TIA extends ListActivity
 	registerReceiver(bReceiver, rIntentFilter);
 
 	//Set list view
-	adapter = new ArrayAdapter<QResult>(this, R.layout.list_item, info);
+	adapter = new QResultAdapter(this, R.layout.list_item, info);
 	setListAdapter(adapter);
 	ListView lv = getListView();
 	lv.setTextFilterEnabled(true);
@@ -167,8 +210,7 @@ class OnClick
 
     public void onItemClick(AdapterView<?> parent, View view,
 			    int position, long id) {
-	// When clicked, show a toast with the TextView text
-	Toast.makeText(context, ((TextView) view).getText(),
+	Toast.makeText(context, "Wat's up?",
 		       Toast.LENGTH_SHORT).show();
     }
 }
