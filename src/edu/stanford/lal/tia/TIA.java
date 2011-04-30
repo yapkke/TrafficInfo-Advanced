@@ -23,25 +23,33 @@ import com.google.gson.Gson;
 
 import org.sqlite.helper.CursorHelper;
 
-class NameValue
+class QResult
 {
-    /** Name
+    /** Application name
      */
-    public String name;
-    /** Value
+    public String appname;
+    /** Packet count
      */
-    public String value;
+    public Long pc;
+    /** Byte count
+     */
+    public Long bc;
+    /** Duration
+     */
+    public Double duration;
 
-    public NameValue(String n, String v)
+    public QResult(Vector v)
     {
-	name = n;
-	value = v;
+	appname = (String) v.get(0);
+	pc = (Long) v.get(1);
+	bc = (Long) v.get(2);
+	duration = (Double) v.get(3);
     }
 
     @Override
 	public String toString()
     {
-	return name+"\n   Value="+value;
+	return appname;
     }
 }
 
@@ -55,9 +63,9 @@ public class TIA extends ListActivity
     /** Debug name
      */
     private static final String TAG = "TIA";
-    /** Vector of information
+    /** Vector of information to list
      */
-    Vector<NameValue> COUNTRIES = new Vector<NameValue>();
+    Vector<QResult> info = new Vector<QResult>();
     /** Reference to GSON
      */
     Gson gson = new Gson();
@@ -66,7 +74,7 @@ public class TIA extends ListActivity
     LalMessage lmsg = new LalMessage();
     /** ListView adapter
      */
-    ArrayAdapter<NameValue> adapter;
+    ArrayAdapter<QResult> adapter;
 
     /** Broadcast receiver
      */
@@ -80,22 +88,12 @@ public class TIA extends ListActivity
 		String r = intent.getStringExtra(LalMessage.Result.str_key);
 		Log.d(TAG, r);
 		LalMessage.LalResult result = gson.fromJson(r, LalMessage.LalResult.class);
-							    
+	    			    
 		for (int i = 0; i < result.results.size(); i++)
 		{
 		    Vector row = CursorHelper.decipherRow(result.results.get(i));
-		    Log.d(TAG, "App "+((String) row.get(0)));
-		    Log.d(TAG, "PC "+((Long) row.get(1)));
-		    Log.d(TAG, "BC "+((Long) row.get(2)));
-		    Log.d(TAG, "D "+((Double) row.get(3)));
+		    info.add(new QResult(row));
 		}
-		
-
-		COUNTRIES.add(new NameValue("Test1", "t"));
-		COUNTRIES.add(new NameValue("Test2", "ts"));
-		COUNTRIES.add(new NameValue("Test3", "te"));
-		COUNTRIES.add(new NameValue("Test4", "te"));
-		COUNTRIES.add(new NameValue("Test5", "te2"));
 		adapter.notifyDataSetChanged();
 	    }
 	}
@@ -126,7 +124,7 @@ public class TIA extends ListActivity
 	registerReceiver(bReceiver, rIntentFilter);
 
 	//Set list view
-	adapter = new ArrayAdapter<NameValue>(this, R.layout.list_item, COUNTRIES);
+	adapter = new ArrayAdapter<QResult>(this, R.layout.list_item, info);
 	setListAdapter(adapter);
 	ListView lv = getListView();
 	lv.setTextFilterEnabled(true);
