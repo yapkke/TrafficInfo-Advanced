@@ -32,7 +32,7 @@ public class LalMessage
     {
 	public String[] columns = null;
 
-	public Vector<Object> results = new Vector<Object>();
+	public Vector<Vector<String>> results = new Vector<Vector<String>>();
     }
 
     public class LalQuery
