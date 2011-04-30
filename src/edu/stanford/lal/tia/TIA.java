@@ -21,6 +21,8 @@ import edu.stanford.lal.LalMessage;
 
 import com.google.gson.Gson;
 
+import org.sqlite.helper.CursorHelper;
+
 class NameValue
 {
     /** Name
@@ -73,16 +75,29 @@ public class TIA extends ListActivity
 	@Override 
 	    public void onReceive(Context context, Intent intent) 
 	{
-	    Log.d(TAG, "Received intent");
+	    if (intent.getAction().equals(LalMessage.Result.action))
+	    {
+		String r = intent.getStringExtra(LalMessage.Result.str_key);
+		Log.d(TAG, r);
+		LalMessage.LalResult result = gson.fromJson(r, LalMessage.LalResult.class);
+							    
+		for (int i = 0; i < result.results.size(); i++)
+		{
+		    Vector row = CursorHelper.decipherRow(result.results.get(i));
+		    Log.d(TAG, "App "+((String) row.get(0)));
+		    Log.d(TAG, "PC "+((Long) row.get(1)));
+		    Log.d(TAG, "BC "+((Long) row.get(2)));
+		    Log.d(TAG, "D "+((Double) row.get(3)));
+		}
+		
 
-	    COUNTRIES.add(new NameValue("Test1", "t"));
-	    COUNTRIES.add(new NameValue("Test2", "ts"));
-	    COUNTRIES.add(new NameValue("Test3", "te"));
-	    COUNTRIES.add(new NameValue("Test4", "te"));
-	    COUNTRIES.add(new NameValue("Test5", "te2"));
-	    adapter.notifyDataSetChanged();
-
-	    
+		COUNTRIES.add(new NameValue("Test1", "t"));
+		COUNTRIES.add(new NameValue("Test2", "ts"));
+		COUNTRIES.add(new NameValue("Test3", "te"));
+		COUNTRIES.add(new NameValue("Test4", "te"));
+		COUNTRIES.add(new NameValue("Test5", "te2"));
+		adapter.notifyDataSetChanged();
+	    }
 	}
 
     };
@@ -135,6 +150,8 @@ public class TIA extends ListActivity
     @Override
 	public void onDestroy()
     {
+	unregisterReceiver(bReceiver);
+
 	Log.d(TAG, "Stopping TIA...");
 	super.onDestroy();
     }
