@@ -1,10 +1,11 @@
 package org.sqlite.helper;
 
-import android.database.sqlite.SQLiteCursor;
-
 import java.util.Vector;
 
+import android.database.sqlite.SQLiteCursor;
+
 import com.google.gson.Gson;
+
 
 
 /** Class to help with SQLiteCursor

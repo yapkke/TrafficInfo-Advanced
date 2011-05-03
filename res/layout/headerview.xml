@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="fill" >
+       <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:paddingRight="6dip"
+        android:paddingLeft="6dip"
+        android:gravity="center_vertical" >
+        
+        <TextView android:layout_width="110dip"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/app_label"
+        android:textStyle="bold"/>
+        
+        <TextView android:layout_width="60dip"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/bytes"
+        android:textStyle="bold"/>
+        
+        <TextView android:layout_width="60dip"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/packets" 
+        android:textStyle="bold"/>
+        
+        <TextView android:layout_width="80dip"
+        android:layout_height="wrap_content"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="@string/duration" 
+        android:textStyle="bold"/>
+        
+    </LinearLayout>
+</LinearLayout>

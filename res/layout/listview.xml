@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+/*
+** extract the xml code from Android setting source code
+** a bit modification to make the structure simpler 
+*/
+-->
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="?android:attr/listPreferredItemHeight"
+    android:orientation="vertical"
+    android:gravity="fill" >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal"
+        android:paddingRight="6dip"
+        android:paddingLeft="6dip"
+        android:gravity="center_vertical" >
+    
+        <ImageView android:id="@+id/icon"
+            android:layout_width="40dip"
+            android:layout_height="@android:dimen/app_icon_size"
+            android:layout_marginRight="5dip"
+            android:layout_gravity="center_vertical"
+            android:scaleType="fitCenter"/>
+            
+        <TextView android:id="@+id/appName"
+        android:layout_width="65dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+        
+        <TextView android:id="@+id/bytes"
+        android:layout_width="60dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+        
+        <TextView android:id="@+id/packets"
+        android:layout_width="60dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>
+        
+        <TextView android:id="@+id/duration"
+        android:layout_width="80dip"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:singleLine="true"
+        android:textAppearance="?android:attr/textAppearanceSmall"/>           
+    </LinearLayout>
+</LinearLayout>
+
