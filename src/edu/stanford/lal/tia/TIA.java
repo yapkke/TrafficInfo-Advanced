@@ -3,8 +3,6 @@ package edu.stanford.lal.tia;
 import java.util.ArrayList;
 import java.util.Vector;
 
-import org.sqlite.helper.CursorHelper;
-
 import android.app.ListActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,18 +10,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import edu.stanford.chart.BudgetPieChart;
 import edu.stanford.lal.LalMessage;
 
 /**
@@ -73,16 +67,16 @@ public class TIA extends ListActivity {
 				LalMessage.LalResult result = gson.fromJson(r,
 						LalMessage.LalResult.class);
 
-				for (int i = 0; i < result.results.size(); i++) {
+				/*for (int i = 0; i < result.results.size(); i++) {
 					Vector row = CursorHelper
 							.decipherRow(result.results.get(i));
 					listItems.add(new ListItem(row));
-				}
+				}*/
 
 				/*
 				 * Directly test  
 				*/
-				/*Vector row = new Vector();
+				Vector row = new Vector();
 				row.add("com.google.android.apps.maps"); row.add(12345678L);
 				row.add(53845L); row.add(10.2131); ListItem item = new
 				ListItem(row); listItems.add(item); Vector row1 = new
@@ -90,7 +84,7 @@ public class TIA extends ListActivity {
 				row1.add(12345678L); row1.add(53845L); row1.add(10.2131);
 				ListItem item1 = new ListItem(row1); listItems.add(item1);
 				adapter.notifyDataSetChanged();
-				*/
+				
 			}
 		}
 
@@ -161,6 +155,13 @@ class OnClick implements OnItemClickListener {
 
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
-		Toast.makeText(context, "Wat's up?", Toast.LENGTH_SHORT).show();
+        ListView l = (ListView)parent;
+        ListItem item = (ListItem)l.getAdapter().getItem(position);
+		//Toast.makeText(context, "More info of " + item.appName, Toast.LENGTH_SHORT).show();
+        String[] keys = new String[] {"TCP", "UDP", "ICMP", "Other"};
+        double[] values = new double[] {50, 30, 15, 5};
+        Intent intent = new BudgetPieChart(item.appName, keys, values).execute(context);
+        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(intent);
 	}
 }
