@@ -52,7 +52,6 @@ public class TIA extends ListActivity {
 	/**
 	 * ListView adapter
 	 */
-	// QResultAdapter adapter;
 	ListItemAdapter adapter;
 
 	/**
@@ -75,22 +74,10 @@ public class TIA extends ListActivity {
 
 				for (int i = 0; i < result.results.size(); i++) {
 					Vector row = CursorHelper
-							.decipherRow(result.results.get(i));
+					    .decipherRow(result.results.get(i));
 					listItems.add(new ListItem(row));
 				}
-
-				/*
-				 * Directly test  
-				*/
-				/*Vector row = new Vector();
-				row.add("com.google.android.apps.maps"); row.add(12345678L);
-				row.add(53845L); row.add(10.2131); ListItem item = new
-				ListItem(row); listItems.add(item); Vector row1 = new
-				Vector(); row1.add("com.android.browser");
-				row1.add(12345678L); row1.add(53845L); row1.add(10.2131);
-				ListItem item1 = new ListItem(row1); listItems.add(item1);
 				adapter.notifyDataSetChanged();
-				*/
 			}
 		}
 
@@ -99,27 +86,10 @@ public class TIA extends ListActivity {
 	@Override
 	protected void onStart() {
 		super.onStart();
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-	}
-
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		Log.d(TAG, "Starting TIA...");
 
-		// Register for result of query
-		IntentFilter rIntentFilter = new IntentFilter();
-		rIntentFilter.addAction(LalMessage.Result.action);
-		registerReceiver(bReceiver, rIntentFilter);
-
 		// Set list view
-		// adapter = new QResultAdapter(this, R.layout.list_item, info);
 		adapter = new ListItemAdapter(this, R.layout.listview, listItems);
-		// setListAdapter(adapter);
 		View header = (View) getLayoutInflater().inflate(R.layout.headerview,
 				null);
 		ListView lv = getListView();
@@ -140,6 +110,23 @@ public class TIA extends ListActivity {
 		i.putExtra(LalMessage.Query.str_key,
 				gson.toJson(q, LalMessage.LalQuery.class));
 		sendBroadcast(i);
+
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		Log.d(TAG, "Creating TIA...");
+
+		// Register for result of query
+		IntentFilter rIntentFilter = new IntentFilter();
+		rIntentFilter.addAction(LalMessage.Result.action);
+		registerReceiver(bReceiver, rIntentFilter);
 	}
 
 	@Override
