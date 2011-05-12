@@ -3,6 +3,8 @@ package edu.stanford.lal.tia;
 import java.util.ArrayList;
 import java.util.Vector;
 
+import org.sqlite.helper.CursorHelper;
+
 import android.app.ListActivity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -67,16 +69,15 @@ public class TIA extends ListActivity {
 				LalMessage.LalResult result = gson.fromJson(r,
 						LalMessage.LalResult.class);
 
-				/*for (int i = 0; i < result.results.size(); i++) {
-					Vector row = CursorHelper
-							.decipherRow(result.results.get(i));
+				for (int i = 0; i < result.results.size(); i++) {
+					Vector row = CursorHelper.decipherRow(result.results.get(i));
 					listItems.add(new ListItem(row));
-				}*/
+				}
 
 				/*
 				 * Directly test  
 				*/
-				Vector row = new Vector();
+				/*Vector row = new Vector();
 				row.add("com.google.android.apps.maps"); row.add(12345678L);
 				row.add(53845L); row.add(10.2131); ListItem item = new
 				ListItem(row); listItems.add(item); Vector row1 = new
@@ -84,6 +85,7 @@ public class TIA extends ListActivity {
 				row1.add(12345678L); row1.add(53845L); row1.add(10.2131);
 				ListItem item1 = new ListItem(row1); listItems.add(item1);
 				adapter.notifyDataSetChanged();
+				*/
 				
 			}
 		}
