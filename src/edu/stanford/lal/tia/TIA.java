@@ -77,6 +77,49 @@ public class TIA extends ListActivity {
 			}
 			adapter.notifyDataSetChanged();
 		    }
+		    else if (result.columns[1].compareTo("SUM(Byte_Count)") == 0)
+		    {
+			//Result for pie chart
+			String aname = "";
+			String[] keys = new String[result.results.size()];
+			double[] values = new double[result.results.size()];
+			for (int i = 0; i < result.results.size(); i++) 
+			{
+			    Vector row = CursorHelper
+				.decipherRow(result.results.get(i));
+			    aname = (String) row.get(0);
+			    Long k = (Long) row.get(2);
+			    switch (k.intValue())
+			    {
+			    case 0:
+				keys[i] = "Non-IP";
+				break;
+			    case 3:
+				keys[i] = "ICMP";
+				break;
+			    case 53:
+				keys[i] = "DNS";
+				break;
+			    case 67:
+				keys[i] = "DHCP";
+				break;
+			    case 80:
+				keys[i] = "HTTP";
+				break;
+			    case 443:
+				keys[i] = "HTTPS";
+				break;
+			    default:
+				keys[i] = k.toString();
+			    }
+			    values[i] = ((Long) row.get(1)).doubleValue();
+			}
+
+			Intent chartintent = new BudgetPieChart(aname, keys, values)
+			    .execute(context);
+			chartintent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			context.startActivity(chartintent);
+		    }
 		}
 	    }	
 	};
@@ -138,29 +181,29 @@ public class TIA extends ListActivity {
 	super.onDestroy();
     }
 
-}
-
-class OnClick implements OnItemClickListener {
-    Context context;
-
-    public OnClick(Context c) {
-	context = c;
-    }
-
-    public void onItemClick(AdapterView<?> parent, View view, int position,
-			    long id) {
-	ListView lv = (ListView) parent;
-	ListItem item = (ListItem) lv.getAdapter().getItem(position);
-	Log.d("TIA Click", "name of app"+item.appName);
-
+    class OnClick implements OnItemClickListener {
+	Context context;
 	
-
-
-	String[] keys = new String[] { "TCP", "UDP", "ICMP", "Other" };
-	double[] values = new double[] { 50, 30, 15, 5 };
-	Intent intent = new BudgetPieChart(item.appName, keys, values)
-	    .execute(context);
-	intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-	context.startActivity(intent);
-    }
+	public OnClick(Context c) {
+	    context = c;
+	}
+	
+	public void onItemClick(AdapterView<?> parent, View view, int position,
+				long id) {
+	    ListView lv = (ListView) parent;
+	    ListItem item = (ListItem) lv.getAdapter().getItem(position);
+	    
+	    LalMessage.LalQuery q = lmsg.new LalQuery();
+	    q.columns = new String[] { "App", "SUM(Byte_Count)", "MIN(Tp_Source, Tp_Destination)"};
+	    q.groupBy = "MIN(Tp_Source, Tp_Destination)";
+	    q.orderBy = "SUM(Byte_Count)";
+	    q.selection = "App=\""+item.appName+"\"";
+	    Intent i = new Intent(LalMessage.Query.action);
+	    i.setPackage(getPackageName());
+	    i.putExtra(LalMessage.Query.str_key,
+		       gson.toJson(q, LalMessage.LalQuery.class));
+	    sendBroadcast(i);
+	}
+    }   
 }
+
