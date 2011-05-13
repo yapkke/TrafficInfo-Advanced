@@ -148,7 +148,7 @@ public class TIA extends ListActivity {
 	q.columns = new String[] { "App", "SUM(Packet_Count)",
 				   "SUM(Byte_Count)", "SUM(Duration)" };
 	q.groupBy = "App";
-	q.orderBy = "SUM(Byte_Count)";
+	q.orderBy = "SUM(Byte_Count) DESC";
 	Intent i = new Intent(LalMessage.Query.action);
 	i.setPackage(getPackageName());
 	i.putExtra(LalMessage.Query.str_key,
