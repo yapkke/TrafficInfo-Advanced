@@ -34,10 +34,6 @@ public class TIA extends ListActivity {
 	 */
 	private static final String TAG = "TIA";
 	/**
-	 * Vector of information to list
-	 */
-	// Vector<QResult> info = new Vector<QResult>();
-	/**
 	 * Reference to GSON
 	 */
 	Gson gson = new Gson();
@@ -48,8 +44,7 @@ public class TIA extends ListActivity {
 	/**
 	 * ListView adapter
 	 */
-	ListItemAdapter adapter;
-
+	ListItemAdapter adapter=null;
 	/**
 	 * New ListView adapter
 	 */
@@ -68,9 +63,10 @@ public class TIA extends ListActivity {
 				LalMessage.LalResult result = gson.fromJson(r,
 						LalMessage.LalResult.class);
 
+				listItems.clear();
 				for (int i = 0; i < result.results.size(); i++) {
 					Vector row = CursorHelper
-							.decipherRow(result.results.get(i));
+					    .decipherRow(result.results.get(i));
 					listItems.add(new ListItem(row));
 				}
 				adapter.notifyDataSetChanged();
@@ -85,14 +81,17 @@ public class TIA extends ListActivity {
 		Log.d(TAG, "Starting TIA...");
 
 		// Set list view
-		adapter = new ListItemAdapter(this, R.layout.listview, listItems);
-		View header = (View) getLayoutInflater().inflate(R.layout.headerview,
-				null);
-		ListView lv = getListView();
-		lv.addHeaderView(header);
-		lv.setTextFilterEnabled(true);
-		lv.setOnItemClickListener(new OnClick(getApplicationContext()));
-		setListAdapter(adapter);
+		if (adapter == null)
+		{
+		    adapter = new ListItemAdapter(this, R.layout.listview, listItems);
+		    View header = (View) getLayoutInflater().inflate(R.layout.headerview,
+								     null);
+		    ListView lv = getListView();
+		    lv.addHeaderView(header);
+		    lv.setTextFilterEnabled(true);
+		    lv.setOnItemClickListener(new OnClick(getApplicationContext()));
+		    setListAdapter(adapter);
+		}
 
 		// Send broadcast query
 		LalMessage.LalQuery q = lmsg.new LalQuery();
@@ -144,10 +143,9 @@ class OnClick implements OnItemClickListener {
 
 	public void onItemClick(AdapterView<?> parent, View view, int position,
 			long id) {
+
 		ListView l = (ListView) parent;
 		ListItem item = (ListItem) l.getAdapter().getItem(position);
-		// Toast.makeText(context, "More info of " + item.appName,
-		// Toast.LENGTH_SHORT).show();
 		String[] keys = new String[] { "TCP", "UDP", "ICMP", "Other" };
 		double[] values = new double[] { 50, 30, 15, 5 };
 		Intent intent = new BudgetPieChart(item.appName, keys, values)
