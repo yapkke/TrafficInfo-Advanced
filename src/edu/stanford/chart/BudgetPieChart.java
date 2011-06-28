@@ -63,7 +63,7 @@ public class BudgetPieChart extends AbstractDemoChart {
 		renderer.setLegendTextSize(20);
 		return ChartFactory.getPieChartIntent(context,
 				buildCategoryDataset("Traffic", this.legends, this.values), renderer,
-				"Traffic Statistics");
+				this.title);
 	}
 
 }
