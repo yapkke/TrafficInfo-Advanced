@@ -6,6 +6,7 @@ import org.achartengine.renderer.DefaultRenderer;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.util.Log;
 
 /**
  * Budget demo pie chart.
@@ -15,8 +16,13 @@ public class BudgetPieChart extends AbstractDemoChart {
 	String[] legends;
 	double[] values;
 	String title;
-	final int[] colors = new int[] { Color.BLUE, Color.GREEN, Color.MAGENTA,
-			Color.YELLOW, Color.CYAN};
+    final int[] colors = new int[] { Color.BLUE, Color.RED, Color.CYAN, Color.MAGENTA,
+				     Color.YELLOW };
+
+    /**
+     * Debug name
+     */
+    private static final String TAG = "PieChart";
 	
 	/**
 	 * Class Constructor
@@ -53,17 +59,17 @@ public class BudgetPieChart extends AbstractDemoChart {
 	 * @return the built intent
 	 */
 	public Intent execute(Context context) {
-		int len = this.colors.length > this.values.length ? this.values.length : this.colors.length;
-        int[] colors = new int[len];
-        for (int i = 0; i < len; i++) {
-        	colors[i] = this.colors[i];
-        }
-		DefaultRenderer renderer = buildCategoryRenderer(colors);
-		renderer.setLabelsTextSize(14);
-		renderer.setLegendTextSize(20);
-		return ChartFactory.getPieChartIntent(context,
-				buildCategoryDataset("Traffic", this.legends, this.values), renderer,
-				this.title);
+	    int[] colors = new int[this.values.length];
+	    for (int i = 0; i < this.values.length; i++) {
+        	colors[i] = this.colors[i%this.colors.length];
+	    }
+	
+	    DefaultRenderer renderer = buildCategoryRenderer(colors);
+	    renderer.setLabelsTextSize(14);
+	    renderer.setLegendTextSize(20);
+	    return ChartFactory.getPieChartIntent(context,
+						  buildCategoryDataset("Traffic", this.legends, this.values), renderer,
+						  this.title);
 	}
 
 }
